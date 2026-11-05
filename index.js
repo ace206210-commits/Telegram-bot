@@ -26,7 +26,7 @@ const CASH = {
     menuData: {},
     linkMenuData: {},
     startMessage: {},
-    menuTitle: "👇 Sila Pilih Menu Utama:",
+    menuTitle: "",
     // ID SISTEM (BOLEH TUKAR DI PANEL)
     SUPER_ADMIN_ID: process.env.SUPER_ADMIN_ID ? parseInt(process.env.SUPER_ADMIN_ID) : 9083993489,
     SUPER_ADMIN_IDS: process.env.SUPER_ADMIN_IDS ? process.env.SUPER_ADMIN_IDS.split(",").map(id => parseInt(id.trim())).filter(Boolean) : (process.env.SUPER_ADMIN_ID ? [parseInt(process.env.SUPER_ADMIN_ID)] : [9083993489]), // Letak senarai ID Super Admin di sini (boleh banyak ID)
@@ -136,7 +136,7 @@ async function loadConfig() {
             text: "👋 Hi %USERNAME% Bossku 😘"
         });
 
-        await load("menuTitle", "👇 Sila Pilih Menu Utama:");
+        await load("menuTitle", " ");
 
         // Load System IDs
         await load("SUPER_ADMIN_ID", CASH.SUPER_ADMIN_ID || 9083993489);
@@ -297,7 +297,7 @@ async function sendStepMenu(ctx) {
         const menuButtons = inlineMenuKeys.map(k => [Markup.button.callback(k, `trig_menu_${k}`)]);
         const menuInlineKbd = Markup.inlineKeyboard(menuButtons);
 
-        await ctx.reply(CASH.menuTitle || "👇 Sila Pilih Menu Utama:", {
+        await ctx.reply(CASH.menuTitle || " ", {
             parse_mode: "Markdown",
             ...menuInlineKbd
         }).catch(() => { });
@@ -439,7 +439,7 @@ bot.start(async (ctx) => {
         await ctx.reply(caption, { parse_mode: "Markdown", ...inlineKbd });
     }
 
-    await ctx.reply(CASH.menuTitle || "👇 Sila Pilih Menu Utama:", { parse_mode: "Markdown", ...menuInlineKbd });
+    await ctx.reply(CASH.menuTitle || " ", { parse_mode: "Markdown", ...menuInlineKbd });
 
     if (replyMenuKeys.length > 0) {
         await ctx.reply("👇 Menu Utama:", { reply_markup: replyKbd });
@@ -1899,4 +1899,3 @@ function startKeepAlive() {
 
 process.once('SIGINT', () => { bot.stop('SIGINT'); server.close(); });
 process.once('SIGTERM', () => { bot.stop('SIGTERM'); server.close(); });
-
